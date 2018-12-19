@@ -12,7 +12,19 @@ app.get("/", function(req, res) {
 });
 
 app.post("/", function(req, res) {
-  console.log(req.body.crypto);
+    
+    var crypto = req.body.crypto;
+    var fiat = req.body.fiat;
+
+    var baseURL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/";
+    var finalURL = baseURL + crypto + fiat;
+
+  request(finalURL, function(error, response, body) {
+    var data = JSON.parse(body);
+    var price = data.last;
+
+    res.send("<h1>The current price of " + crypto + " is " + price + " " + fiat + "</h1>");
+  });
 });
 
 app.listen(3000, function() {
