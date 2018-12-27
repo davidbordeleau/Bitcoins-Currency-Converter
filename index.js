@@ -1,11 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
+const ejs = require("ejs");
 
 const app = express();
 
-app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get("/", function(req, res) {
@@ -13,21 +16,21 @@ app.get("/", function(req, res) {
 });
 
 app.post("/", function(req, res) {
-    
-    var crypto = req.body.crypto;
-    var fiat = req.body.fiat;
 
-    var amount = req.body.amount;
+  var crypto = req.body.crypto;
+  var fiat = req.body.fiat;
 
-    var options = {
-      url: "https://apiv2.bitcoinaverage.com/convert/global",
-      method: "GET",
-      qs: {
-        from: crypto,
-        to: fiat,
-        amount: amount
-      }
-    };
+  var amount = req.body.amount;
+
+  var options = {
+    url: "https://apiv2.bitcoinaverage.com/convert/global",
+    method: "GET",
+    qs: {
+      from: crypto,
+      to: fiat,
+      amount: amount
+    }
+  };
 
   request(options, function(error, response, body) {
     var data = JSON.parse(body);
@@ -35,10 +38,24 @@ app.post("/", function(req, res) {
 
     var currentDate = data.time;
 
-    res.write("<p>The current date is " + currentDate + " (GMT)</p>");
-    res.write("<h1>" + amount + " " + crypto + " is currently worth " + price + " " + fiat + "</h1>");
+    let today = new Date();
 
-    res.send();
+    let options = {
+      weekday: "long",
+      day: "numeric",
+      month: "long"
+    };
+
+    let day = today.toLocaleDateString("en-US", options);
+
+    res.render("result", {
+      day: day,
+      data: data,
+      price: price,
+      crypto: crypto,
+      fiat: fiat,
+      amount: amount
+    });
   });
 });
 
