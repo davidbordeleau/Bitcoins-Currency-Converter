@@ -1,6 +1,13 @@
-# Dependency directories
+# dependencies
 node_modules
-jspm_packages
 
-# Optional npm cache directory
-.npm
+# testing
+coverage
+
+# production
+build
+
+# misc
+.DS_Store
+.env
+npm-debug.log
