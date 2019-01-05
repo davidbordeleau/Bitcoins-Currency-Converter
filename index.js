@@ -40,15 +40,20 @@ app.post("/", function(req, res) {
 
     let today = new Date();
 
+    let hr = today.getHours();
+    let min = ('0'+today.getMinutes()).slice(-2);
+    
     let options = {
       weekday: "long",
       day: "numeric",
-      month: "long"
+      month: "long",
     };
 
     let day = today.toLocaleDateString("en-US", options);
 
     res.render("result", {
+      hr: hr,
+      min: min,
       day: day,
       data: data,
       price: price,
