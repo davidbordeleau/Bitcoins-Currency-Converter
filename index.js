@@ -34,6 +34,7 @@ app.post("/", function(req, res) {
 
   request(options, function(error, response, body) {
     var data = JSON.parse(body);
+
     var price = data.price;
 
     var currentDate = data.time;
