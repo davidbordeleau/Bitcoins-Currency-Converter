@@ -42,7 +42,7 @@ app.post("/", function(req, res) {
 
     let hr = today.getHours();
     let min = ('0'+today.getMinutes()).slice(-2);
-    
+
     let options = {
       weekday: "long",
       day: "numeric",
@@ -67,3 +67,5 @@ app.post("/", function(req, res) {
 app.listen(3000, function() {
   console.log("Our server is running on port 3000");
 });
+
+
